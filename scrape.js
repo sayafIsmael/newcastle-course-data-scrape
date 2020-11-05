@@ -4,7 +4,7 @@ const jsonLinkData = require('./linkFetched.json') || [];
 
 const puppeteer = require('puppeteer');
 const scrapurl = 'https://www.newcastle.edu.au/course/course-2016-listing';
-// const scrapCourse = require('./scrapeCourse');
+const scrapCourse = require('./scrapCourse');
 
 
 async function start() {
@@ -28,20 +28,25 @@ async function start() {
                     for (const courseItem of courseItems) {
                         let courseLink = await courseItem.$eval('td > a', a => a.href)
                         let courseName = await courseItem.$$eval('td > a', a => a.map(text => text.textContent))
-                        console.log(courseName[1])
+                        courseName = courseName[1]
+                        
+                        let courseYear = await courseItem.$$eval('td', tdata => tdata[2].textContent)
+                        let year = courseYear.includes('2020') ? '2020' : 'NA'
+                        
+                        console.log(courseName, year)
 
-                        if (!jsonLinkData.includes(courseLink)) {
+                        if (!jsonLinkData.includes(courseLink, courseYear, year)) {
 
-                            // let courseSaved = await scrapCourse.fetchCourseDetails(courseLink)
-                            // if (courseSaved) {
-                            //     jsonLinkData.push(courseLink)
-                            //     fs.writeFile('linkFetched.json', JSON.stringify(jsonLinkData), (err) => {
-                            //         if (err) {
-                            //             console.log(err);
-                            //         }
-                            //         console.log("Course link is saved. ", courseLink);
-                            //     });
-                            // }
+                            let courseSaved = await scrapCourse.fetchCourseDetails(courseLink, courseName, courseYear)
+                            if (courseSaved) {
+                                jsonLinkData.push(courseLink)
+                                fs.writeFile('linkFetched.json', JSON.stringify(jsonLinkData), (err) => {
+                                    if (err) {
+                                        console.log(err);
+                                    }
+                                    console.log("Course link is saved. ", courseLink);
+                                });
+                            }
 
                         }
                     }

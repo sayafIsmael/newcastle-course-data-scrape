@@ -3,11 +3,11 @@ var uniqueNumber = new UniqueNumber(true);
 
 const model = function (courseName = "NA", courseCode="NA", courseLevel = "NA",
     courseStudyModes = [], totalCreditPoints = "NA", courseLink = "NA", isAvailableOnline = {},
-    prerequisites = "NA", semester, year = "NA", unitType = "NA",  description="NA") {
-    this.courseId = "UNE-" + uniqueNumber.generate()
+    prerequisites = "NA", semester, year = "NA", unitType = "NA",  description="NA", campuses = []) {
+    this.courseId = "newcastle-" + uniqueNumber.generate()
     this.courseName = courseName
-    this.courseCode ="00109J"
-    this.cricosCode = cricosCode
+    this.courseCode = courseCode
+    this.cricosCode = "00109J"
     this.studyArea = "NA"
     this.courseLevel = courseLevel
     this.courseStudyModes = courseStudyModes
@@ -16,7 +16,7 @@ const model = function (courseName = "NA", courseCode="NA", courseLevel = "NA",
         {
             unitType,
             creditPoints: totalCreditPoints,
-            description: "",
+            description,
             unitList: [
                 {
                     code: "NA",
@@ -36,7 +36,7 @@ const model = function (courseName = "NA", courseCode="NA", courseLevel = "NA",
         },
     ]
     this.isAvailableOnline = isAvailableOnline
-    this.campuses = []
+    this.campuses = campuses
     this.courseFees = []
     this.institutionSpecificData = {}
     this.courseLink = courseLink
