@@ -24,7 +24,7 @@ module.exports.fetchCourseDetails = async (scrapurl, courseName, year) => {
         let campuses = []
 
         let studyMode = await page.$eval('div[class="contact-hours-detail"] > p', p => p.textContent).catch(e => console.log('Error: ', e.message))
-        if (studyMode.includes('On Campus')) {
+        if (studyMode && studyMode.includes('On Campus')) {
             let str = studyMode.split('On Campus')
             if (str[1].includes('Full Term')) {
                 courseStudyModes.push({
